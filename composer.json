@@ -1,0 +1,45 @@
+{
+    "name": "lelectrolux/content-links",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2",
+        "ext-mbstring": "*",
+        "laravel/framework": "^12.18",
+        "maatwebsite/excel": "^3.1.64",
+        "guzzlehttp/guzzle": "^7.9.3",
+        "nesbot/carbon": "^3.10"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.22.1",
+        "laravel/tinker": "^2.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lelectrolux\\ContentLinks\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lelectrolux\\ContentLinks\\ContentLinksServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "Lelectrolux",
+            "email": "Lelectrolux@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "pint": [
+            "@php vendor/bin/pint --ansi"
+        ]
+    }
+}

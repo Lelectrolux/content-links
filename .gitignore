@@ -1,0 +1,12 @@
+/.fleet
+/.idea
+/.phpunit.cache
+/.vscode
+/node_modules
+/build
+/vendor
+.DS_Store
+.phpunit.result.cache
+auth.json
+npm-debug.log
+yarn-error.log
