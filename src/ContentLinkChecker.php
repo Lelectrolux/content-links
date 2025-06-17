@@ -42,7 +42,7 @@ final class ContentLinkChecker
                     'Cache-Control' => 'no-cache',
                     'Pragma' => 'no-cache',
                 ])
-                ->get($url);
+                ->head($url);
         } catch (HttpClientException $e) {
             return null;
         } catch (Throwable $e) {
