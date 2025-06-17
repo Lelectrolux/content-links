@@ -7,6 +7,7 @@ namespace Lelectrolux\ContentLinks;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\Request;
 use Throwable;
 
 final class ContentLinkChecker
@@ -18,6 +19,10 @@ final class ContentLinkChecker
     {
         if (! isset($this->urls[$url])) {
             $response = $this->fetch($url);
+
+            if ($response?->status() === 405) {
+                $response = $this->fetch($url, getMethod: true);
+            }
 
             $effectiveUri = $response?->effectiveUri()?->__toString();
             $redirect = $effectiveUri !== $url ? $effectiveUri : null;
@@ -31,7 +36,7 @@ final class ContentLinkChecker
         return $this->urls[$url];
     }
 
-    private function fetch(string $url): ?Response
+    private function fetch(string $url, bool $getMethod = false): ?Response
     {
         try {
             return $this->http
@@ -42,7 +47,7 @@ final class ContentLinkChecker
                     'Cache-Control' => 'no-cache',
                     'Pragma' => 'no-cache',
                 ])
-                ->head($url);
+                ->send($getMethod ? Request::METHOD_GET : Request::METHOD_HEAD, $url);
         } catch (HttpClientException $e) {
             return null;
         } catch (Throwable $e) {
