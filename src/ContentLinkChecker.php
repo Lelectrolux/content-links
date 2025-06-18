@@ -41,9 +41,11 @@ final class ContentLinkChecker
         try {
             return $this->http
                 ->createPendingRequest()
+                ->accept('text/html, */*;q=0.8')
+                ->withUserAgent(false)
                 ->withHeaders([
-                    'Accept' => 'text/html, */*;q=0.8',
                     'Accept-Language' => 'fr, es;q=0.9, en;q=0.8, *;q=0.5',
+                    'Accept-Encoding' => 'br, deflate, gzip',
                     'Cache-Control' => 'no-cache',
                     'Pragma' => 'no-cache',
                 ])
