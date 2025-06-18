@@ -25,7 +25,9 @@ final class ContentLinksCheck extends Command
     // https://daringfireball.net/2010/07/improved_regex_for_matching_urls
     protected const URL_REGEX = '#(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))#u';
 
-    protected $signature = 'content-links:check {class?*} {--all}';
+    protected $signature = 'content-links:check
+                              {class?* : What model class (and possibly ids) to check, eg. App\Models\MyModel:1,2,3 App\Models\MyOtherModel}
+                              {--failed : Only retry models with a previously failed check}';
 
     protected $description = 'Check for content links in models';
 
@@ -129,11 +131,14 @@ final class ContentLinksCheck extends Command
         return 0;
     }
 
-    protected function modelQuery(mixed $instance, array $fields, mixed $ids)
+    protected function modelQuery(Model&HasContentLinks $instance, array $fields, mixed $ids)
     {
         return $instance::query()
             ->addSelect($instance->getKeyName())
             ->addSelect($fields)
+            ->when($this->option('failed'), function (Builder $builder) {
+                return $builder->whereHas('contentLinks', fn (Builder $builder) => $builder->whereNot('status', 200));
+            })
             ->when($ids, fn (Builder $query) => $query->whereIn($instance->getKeyName(), $ids));
     }
 
@@ -195,12 +200,8 @@ final class ContentLinksCheck extends Command
         $modelClasses = config('content-links.models');
         $arguments = $this->argument('class');
 
-        if ($this->option('all')) {
-            $arguments = $modelClasses;
-        }
-
         if ($arguments === []) {
-            throw new InvalidArgumentException('Please specify a model or use the --all option.');
+            $arguments = $modelClasses;
         }
 
         return array_map(static function ($value) use ($modelClasses) {

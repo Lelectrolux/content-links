@@ -29,11 +29,11 @@ Optionally, add the commands to your scheduler
 
 ```shell
 # \Lelectrolux\ContentLinks\Console\Commands\ContentLinksCheck
-# php artisan content-links:check {class?*} {--all}
-php artisan content-links:check --all
+# php artisan content-links:check {class?*} {--failed}
+php artisan content-links:check
 php artisan content-links:check App\Models\MyModel
 php artisan content-links:check App\Models\MyModel:1,2,3
-php artisan content-links:check App\Models\MyModel:1,2,3 App\Models\MyOtherModel:1,2,3
+php artisan content-links:check App\Models\MyModel:1,2,3 App\Models\MyOtherModel
 ```
 
 ```shell
