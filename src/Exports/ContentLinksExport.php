@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 /**
  * @template TModel of Model&HasContentLinks
  */
-final readonly class ContentLinksExport implements FromQuery, Responsable, WithColumnFormatting, WithColumnWidths, WithEvents, WithHeadings, WithMapping, WithStyles
+final class ContentLinksExport implements FromQuery, Responsable, WithColumnFormatting, WithColumnWidths, WithEvents, WithHeadings, WithMapping, WithStyles
 {
     use Exportable;
 
@@ -96,7 +96,7 @@ final readonly class ContentLinksExport implements FromQuery, Responsable, WithC
         return $headings;
     }
 
-    public function styles(Worksheet $sheet)
+    public function styles(Worksheet $sheet): null
     {
         $max = $sheet->getHighestRow();
 
@@ -122,6 +122,8 @@ final readonly class ContentLinksExport implements FromQuery, Responsable, WithC
         $sheet->getStyle("D2:D{$max}")->setConditionalStyles([$ok, $nok]);
 
         $sheet->setSelectedCell('A1');
+
+        return null;
     }
 
     public function columnFormats(): array

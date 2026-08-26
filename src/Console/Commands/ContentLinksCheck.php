@@ -31,9 +31,6 @@ final class ContentLinksCheck extends Command
 
     protected $description = 'Check for content links in models';
 
-    /** @var array<string, ContentLink> */
-    private array $urls = [];
-
     private array $totals = [];
 
     /**
@@ -72,7 +69,7 @@ final class ContentLinksCheck extends Command
             foreach ($this->modelQuery($instance, $fields, $ids)->cursor() as $model) {
                 $this->totals[$class]['models']++;
 
-                $n = Str::padLeft($i, mb_strlen($modelCount), '0');
+                $n = Str::padLeft((string)$i, mb_strlen($modelCount), '0');
                 $this->output->writeln("[<fg=blue>{$n}</>/{$modelCount}] {$modelBaseName} <fg=cyan>{$model->id}</>");
 
                 $pivots = [];
@@ -131,7 +128,7 @@ final class ContentLinksCheck extends Command
         return 0;
     }
 
-    protected function modelQuery(Model&HasContentLinks $instance, array $fields, mixed $ids)
+    protected function modelQuery(Model&HasContentLinks $instance, array $fields, mixed $ids): Builder
     {
         return $instance::query()
             ->addSelect($instance->getKeyName())
