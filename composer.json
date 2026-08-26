@@ -6,10 +6,10 @@
     "require": {
         "php": "^8.3",
         "ext-mbstring": "*",
-        "laravel/framework": "^12.0 || ^13.0",
-        "maatwebsite/excel": "^3.1 || ^4.0",
-        "phpoffice/phpspreadsheet": "^1.30.5 || ^5.0",
-        "guzzlehttp/guzzle": "^7.9 || ^8.0",
+        "laravel/framework": "^13.0",
+        "maatwebsite/excel": "^4.0",
+        "phpoffice/phpspreadsheet": "^5.0",
+        "guzzlehttp/guzzle": "^8.0",
         "nesbot/carbon": "^3.10"
     },
     "require-dev": {
